@@ -10,6 +10,15 @@ const bcrypt = require("bcryptjs");
 
 router.get("/", async (req, res) => {
   try {
+    res.send("My Api");
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/data", async (req, res) => {
+  try {
     const result = await req.dbo
       .collection("bookings")
       .find({}, { projection: { MovieName: 1, MovieTime: 1, seats: 1, _id: 1 } })
