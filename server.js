@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const connectToDatabase = require('./CreateDatabase'); // Assuming you have a separate file for database connection
 const bookingRoutes = require('./connector');
 const errorHandler = require('./connector');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 8080;
