@@ -12,15 +12,12 @@ router.get("/", async (req, res) => {
   try {
     const result = await req.dbo
       .collection("bookings")
-      .find(
-        {},
-        { projection: { MovieName: 1, MovieTime: 1, seats: 1, _id: 1 } }
-      )
+      .find({}, { projection: { MovieName: 1, MovieTime: 1, seats: 1, _id: 1 } })
       .toArray();
 
     res.status(200).json(result);
   } catch (error) {
-    console.error("Error fetching bookings:", error);
+    console.error("Error fetching bookings:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
