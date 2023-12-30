@@ -10,9 +10,7 @@ const bcrypt = require("bcryptjs");
 
 router.get("/", async (req, res) => {
   try {
-    const client = await connectToDatabase();
-    const dbo = client.db("bookMyShow");
-    const result = await dbo
+    const result = await req.dbo
       .collection("bookings")
       .find(
         {},
