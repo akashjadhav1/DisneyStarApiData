@@ -6,6 +6,24 @@ const bcrypt = require("bcryptjs");
 
 
 
+// Create a shared database connection
+let sharedDBConnection;
+
+// Middleware to connect to the database before each route
+router.use(async (req, res, next) => {
+  try {
+    if (!sharedDBConnection) {
+      sharedDBConnection = await connectToDatabase();
+    }
+    req.dbo = sharedDBConnection.db("bookMyShow");
+    next();
+  } catch (error) {
+    console.error("Error connecting to the database:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
 
 
 router.get("/", async (req, res) => {
