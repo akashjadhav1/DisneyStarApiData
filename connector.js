@@ -10,12 +10,23 @@ const bcrypt = require("bcryptjs");
 
 router.get("/", async (req, res) => {
   try {
-    res.send("My Api");
+    const client = await connectToDatabase();
+    const dbo = client.db("bookMyShow");
+    const result = await dbo
+      .collection("bookings")
+      .find(
+        {},
+        { projection: { MovieName: 1, MovieTime: 1, seats: 1, _id: 1 } }
+      )
+      .toArray();
+
+    res.status(200).json(result);
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error("Error fetching bookings:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 router.post("/register", async (req, res) => {
   try {
