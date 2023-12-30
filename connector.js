@@ -6,24 +6,6 @@ const bcrypt = require("bcryptjs");
 
 
 
-// Create a shared database connection
-let sharedDBConnection;
-
-// Middleware to connect to the database before each route
-router.use(async (req, res, next) => {
-  try {
-    if (!sharedDBConnection) {
-      sharedDBConnection = await connectToDatabase();
-    }
-    req.dbo = sharedDBConnection.db("bookMyShow");
-    next();
-  } catch (error) {
-    console.error("Error connecting to the database:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-
 
 
 router.get("/", async (req, res) => {
@@ -35,19 +17,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/data", async (req, res) => {
-  try {
-    const result = await req.dbo
-      .collection("bookings")
-      .find({}, { projection: { MovieName: 1, MovieTime: 1, seats: 1, _id: 1 } })
-      .toArray();
 
-    res.status(200).json(result);
-  } catch (error) {
-    console.error("Error fetching bookings:", error.message);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+
+
 
 
 router.post("/register", async (req, res) => {
@@ -74,17 +46,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.get("/login", async (req,res)=>{
 
-  try {
-  
-   
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).send({ message: "Internal Server Error" });
-  }
-
-})
 
 router.post("/login", async (req, res) => {
   try {
