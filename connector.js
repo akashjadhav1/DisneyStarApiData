@@ -3,10 +3,30 @@ const router = express.Router();
 const connectToDatabase = require("./CreateDatabase");
 const Users = require("./Schema");
 const bcrypt = require("bcryptjs");
+const { swaggerUi, swaggerSpec } = require('./swagger');
+
+
+
+// Swagger UI endpoint
+router.use('/api-docs', swaggerUi.serve);
+router.get('/api-docs', swaggerUi.setup(swaggerSpec));
 
 
 
 
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Test endpoint
+ *     description: Returns "My API"
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *         content:
+ *           text/plain:
+ *             example: "My API"
+ */
 
 router.get("/", async (req, res) => {
   try {
@@ -21,6 +41,32 @@ router.get("/", async (req, res) => {
 
 
 
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Register a new user
+ *     description: Register a new user with a unique username and password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: Successfully registered
+ *               status: 201
+ */
 
 router.post("/register", async (req, res) => {
   try {
