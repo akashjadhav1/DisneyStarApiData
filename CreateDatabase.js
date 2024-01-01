@@ -3,7 +3,7 @@ require('dotenv').config();
 
 async function connectToDatabase() {
   try {
-    const dbUrl = process.env.MONGODB_URI;
+    const dbUrl = "mongodb+srv://akashjadhav:akash123@cluster1.wsxs1wt.mongodb.net/DisneyServer?retryWrites=true&w=majority";
 
     if (!dbUrl.startsWith('mongodb://') && !dbUrl.startsWith('mongodb+srv://')) {
       throw new Error('Invalid MongoDB URI scheme. It should start with "mongodb://" or "mongodb+srv://".');

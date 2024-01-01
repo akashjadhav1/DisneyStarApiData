@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
+       
     },
     password: {
         type: String,
@@ -26,20 +27,19 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.generateAuthtoken = async function() {
     try {
-        let token1 = jwt.sign({ _id: this._id }, secretKey, {
+        const token = jwt.sign({ _id: this._id }, secretKey, {
             expiresIn: "1d",
         });
 
-        this.tokens = this.tokens.concat({ token: token1 });
+        this.tokens = this.tokens.concat({ token });
         await this.save();
-        return token1;
+        return token;
     } catch (error) {
-        // You cannot use res.status(401) here as res is not defined in this scope
-        console.error(error);
-        throw new Error(error.message);
+        console.error('Error generating auth token:', error);
+        throw new Error('Unable to generate auth token');
     }
 };
 
-const User =new mongoose.model('User', userSchema); 
+const User =new mongoose.model('users', userSchema); 
 
 module.exports = User;
